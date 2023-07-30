@@ -75,8 +75,14 @@ target_link_libraries(your_target PUBLIC slog)
 Thanks to **[CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern)**, loggers
 are static struct configured with only static members. 
 
-Speed is not the main concern are it is designed to be removed from build release.
-Thread-safety as not been checked for now.
+Speed is not the main concern as it is designed to be removed from build release.
+Still, it use fmt::memory_buffer to construct the string. Meaning there is only one print
+per call. Thread-safety as not been checked for now.
+
+Some defines :
+* `NO_SLOG_LOG` : if defined, function calls are empty, macros are set to ((void)0)
+* `NO_SLOG_ASSERT` : if defined, assert macro is set to ((void)0)
+* `SLOG_TRACY_ZONE` : if defined, tracy zones are added; (TODO)
 
 
 ## Dependencies
@@ -179,7 +185,7 @@ static constexpr bool show_level {true};
 Whether or not level's name should be displayed or not.
 
 ```cpp
-static constexpr const char* level_format {"({:>7}) : "};
+static constexpr const char* level_format {"({:>7})"};
 ```
 Level's format. See format specifications [here](https://fmt.dev/latest/syntax.html#format-specification-mini-language)
 
@@ -275,6 +281,47 @@ The library used for testing is [Doctest](https://github.com/doctest/doctest).
 ## Benchmarks
 
 The library used for benchmarking is [Google benchmark](https://github.com/google/benchmark).
+
+### Results
+
+With following code : 
+
+```
+static void BM_string_info_no_arg(benchmark::State& state) {
+	for (auto _ : state)
+	{
+		benchmark::DoNotOptimize(my_logger::to_string<slog::Level::Info>("message"));
+	}
+}
+
+static void BM_string_info_with_1_arg(benchmark::State& state) {
+	for (auto _ : state)
+	{
+		benchmark::DoNotOptimize(my_logger::to_string<slog::Level::Info>("message with arg {}", 1));
+	}
+}
+```
+
+We obtained the following results in release mode:
+
+```
+2023-07-30T11:46:39+02:00
+Running C:\Users\33632\Source\Repos\TBlauwe\SLog\out\build\x64-release-clang\bin\Benchmarks.exe
+Run on (16 X 3294 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x8)
+  L1 Instruction 32 KiB (x8)
+  L2 Unified 512 KiB (x8)
+  L3 Unified 16384 KiB (x1)
+--------------------------------------------------------------------
+Benchmark                          Time             CPU   Iterations
+--------------------------------------------------------------------
+BM_string_info_no_arg            558 ns          519 ns      1445161
+BM_string_info_with_1_arg        579 ns          516 ns      1000000
+```
+
+
+### Configurations
 
 If you want to pass more options to tune the benchmarking, see 
 [Google benchmark usage guide](https://github.com/google/benchmark/blob/main/docs/user_guide.md).

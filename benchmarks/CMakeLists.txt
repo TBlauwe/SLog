@@ -18,6 +18,7 @@ BANNER_2(CHECK_START "Configuring target : benchmarks")
 # --- OPTIONS
 # ------------------------------------------------------------------------------
 ADD_VERSION(NAME benchmark VERSION "v1.8.2")
+ADD_VERSION(NAME spdlog VERSION "v1.12.0")
 PRINT_VERSIONS()
 
 
