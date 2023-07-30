@@ -409,6 +409,7 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 
 		// --- MESSAGE ---
 		static constexpr bool add_new_line {true};
+		static constexpr bool use_message_style {true};
 		static constexpr fmt::text_style message_style {};
 		static constexpr bool inherit_level_style {false};
 		static constexpr bool propagate_level_fg {true};
@@ -439,7 +440,7 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 			// --- TIME ---
 			if constexpr (Self::show_time)
 			{
-				static constexpr fmt::text_style time_style { Self::show_time_bg ? 
+				static constexpr fmt::text_style time_style { Self::show_time_bg ?
 					fmt::bg(Self::time_bg) | fmt::fg(Self::time_fg) :
 					fmt::fg(Self::time_fg)
 				};
@@ -451,7 +452,7 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 			// --- LOGGER ---
 			if constexpr (Self::show_logger_name)
 			{
-				static constexpr fmt::text_style logger_style { Self::show_logger_bg ? 
+				static constexpr fmt::text_style logger_style { Self::show_logger_bg ?
 					fmt::bg(Self::logger_bg) | fmt::fg(Self::logger_fg) :
 					fmt::fg(Self::logger_fg)
 				};
@@ -490,7 +491,10 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 				fmt::format_to(std::back_inserter(out), " ");
 			}
 
-			fmt::format_to(std::back_inserter(out), _message_style, fmt, std::forward<Args>(args)...);
+			if constexpr (Self::use_message_style)
+				fmt::format_to(std::back_inserter(out), _message_style, fmt, std::forward<Args>(args)...);
+			else
+				fmt::format_to(std::back_inserter(out), {}, fmt, std::forward<Args>(args)...);
 			return {out.data(), out.size()};
 #else
 			return {};
