@@ -3,7 +3,7 @@
  * \brief  Main header file implementing logger classs.
  *
  * Usage :
- * \code{.cpp}
+\code{.cpp}
 
 // First define a logger 
 // Don't forget to pass the identifier to Logger, otherwise configurations parameters will not be 
@@ -24,10 +24,10 @@ my_logger::success("my message with or without args {}", arg);
 my_logger::warn("my message with or without args {}", arg);
 my_logger::error("my message with or without args {}", arg);
 my_logger::fatal("my message with or without args {}", arg);
-	 * \endcode
+\endcode
 
 	 * SLog also provides some macros to log only if a condition is verified :
-	 * \code{.cpp}
+\code{.cpp}
 
 slog_debug_if(my_logger, true, "my message with or without args {}", arg);
 slog_info_if(my_logger, true, "my message with or without args {}", arg);
@@ -38,7 +38,7 @@ slog_fatal_if(my_logger, true, "my message with or without args {}", arg);
 
 // An assert is also provided, that abort if condition is false
 slog_assert(my_logger, false, "Abort if false {}", arg);
-	 * \endcode
+\endcode
 	 * 
 	 * Optimisation :
 	 * If _NDEBUG is defined, function body are empty. Function call is still called, but with -O2, 
@@ -69,9 +69,9 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
  *	\param message A fmt string literal, followed by your arguments.
  *
  *	Usage:
- *	\code{.cpp}
+\code{.cpp}
  *	slog_assert(false, my_logger, "This will assert and this {} will be formatted", "argument");
- *	\endcode
+\endcode
  */
 #ifndef NO_SLOG_ASSERT
 #include <cassert>
@@ -96,9 +96,9 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
  *	\param message A fmt string literal, followed by your arguments.
  *
  *	Usage:
- *	\code{.cpp}
+\code{.cpp}
  *	slog_fatal_if(logger, true, "This will emit a fatal message and this {} will be formatted", "argument");
- *	\endcode
+\endcode
  */
 #ifndef NO_SLOG_LOG
 #define slog_fatal_if(logger, condition, message, ...)\
@@ -120,9 +120,9 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
  *	\param message A fmt string literal, followed by your arguments.
  *
  *	Usage:
- *	\code{.cpp}
+\code{.cpp}
  *	slog_error_if(logger, true, "This will emit an error message and this {} will be formatted", "argument");
- *	\endcode
+\endcode
  */
 #ifndef NO_SLOG_LOG
 #define slog_error_if(logger, condition, message, ...)\
@@ -143,9 +143,9 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
  *	\param message A fmt string literal, followed by your arguments.
  *
  *	Usage:
- *	\code{.cpp}
+\code{.cpp}
  *	slog_warn_if(logger, true, "This will emit a warn message and this {} will be formatted", "argument");
- *	\endcode
+\endcode
  */
 #ifndef NO_SLOG_LOG
 #define slog_warn_if(logger, condition, message, ...)\
@@ -166,9 +166,9 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
  *	\param message A fmt string literal, followed by your arguments.
  *
  *	Usage:
- *	\code{.cpp}
+\code{.cpp}
  *	slog_success_if(logger, true, "This will emit a success message and this {} will be formatted", "argument");
- *	\endcode
+\endcode
  */
 #ifndef NO_SLOG_LOG
 #define slog_success_if(logger, condition, message, ...)\
@@ -190,9 +190,9 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
  *	\param message A fmt string literal, followed by your arguments.
  *
  *	Usage:
- *	\code{.cpp}
+\code{.cpp}
  *	slog_info_if(logger, true, "This will emit an info message and this {} will be formatted", "argument");
- *	\endcode
+\endcode
  */
 #ifndef NO_SLOG_LOG
 #define slog_info_if(logger, condition, message, ...)\
@@ -215,9 +215,9 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
  *	\param message A fmt string literal, followed by your arguments.
  *
  *	Usage:
- *	\code{.cpp}
+\code{.cpp}
  *	slog_debug_if(logger, true, "This will emit a debug message and this {} will be formatted", "argument");
- *	\endcode
+\endcode
  */
 #ifndef NO_SLOG_LOG
 #define slog_debug_if(logger, condition, message, ...)\
@@ -275,7 +275,7 @@ namespace slog
 	 * @brief CTRP template class that implements necessary functions to log.
 	 * 
 	 * Usage :
-	 * @code{.cpp}
+\code{.cpp}
 
 // First define a logger 
 // Don't forget to pass the identifier to Logger, otherwise configurations parameters will not be 
@@ -296,10 +296,10 @@ my_logger::success("my message with or without args {}", arg);
 my_logger::warn("my message with or without args {}", arg);
 my_logger::error("my message with or without args {}", arg);
 my_logger::fatal("my message with or without args {}", arg);
-	 * \endcode
+\endcode
 
 	 * SLog also provides some macros to log only if a condition is verified :
-	 * \code{.cpp}
+\code{.cpp}
 
 slog_debug_if(my_logger, true, "my message with or without args {}", arg);
 slog_info_if(my_logger, true, "my message with or without args {}", arg);
@@ -310,7 +310,7 @@ slog_fatal_if(my_logger, true, "my message with or without args {}", arg);
 
 // An assert is also provided, that abort if condition is false
 slog_assert(my_logger, false, "Abort if false {}", arg);
-	 * \endcode
+\endcode
 	 * 
 	 * Optimisation :
 	 * If _NDEBUG is defined, function body are empty. Function call is still called, but with -O2, 

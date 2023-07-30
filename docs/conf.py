@@ -1,8 +1,8 @@
 DOXYFILE = 'Doxyfile'
 
-LINKS_NAVBAR1 = [
-    (None, 'pages', [(None, 'about')])
-]
+#LINKS_NAVBAR1 = [
+#    (None, 'pages', [(None, 'about')])
+#]
 
 # Add your own navbar links using the code below.
 # To find the valid link names, you can inspect the URL of a generated documentation site.

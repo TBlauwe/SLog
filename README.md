@@ -48,7 +48,7 @@ slog_assert(my_logger, false, "Abort if false {}", 13);
 
 Here what it looks like on the terminal :
 
-![alt text](imgs/output.png "Output")
+![alt text](assets/output.png "Output")
 
 ## Features
 
@@ -119,26 +119,31 @@ Here are the available parameters for each category (with default values):
 ```cpp
 static constexpr bool show_time {true};
 ```
+
 Whether or not time should be displayed or not.
 
 ```cpp
 static constexpr bool show_time_bg {false};
 ```
+
 Whether or not a colored background for time should be displayed or not.
 
 ```cpp
 static constexpr fmt::rgb time_bg {20,20,20};
 ```
+
 Time's background color (rgb).
 
 ```cpp
 static constexpr fmt::rgb time_fg {100,100,100};
 ```
+
 Time's foreground (text) color (rgb).
 
 ```cpp
 static constexpr const char * time_format {"[{:%H:%M:%S}]"};
 ```
+
 Time's format. See format specifications [here](https://fmt.dev/latest/syntax.html#chrono-specs)
 
 
@@ -146,31 +151,37 @@ Time's format. See format specifications [here](https://fmt.dev/latest/syntax.ht
 ```cpp
 static constexpr bool show_logger_name {true};
 ```
+
 Whether or not logger's name should be displayed or not.
 
 ```cpp
 static constexpr const char * logger_name {"default"};
 ```
+
 Name to display
 
 ```cpp
 static constexpr bool show_logger_bg {false};
 ```
+
 Whether or not a colored background for logger name should be displayed or not.
 
 ```cpp
 static constexpr fmt::rgb logger_bg {20,20,20};
 ```
+
 Logger's background color (rgb).
 
 ```cpp
 static constexpr fmt::rgb Logger_fg {200,200,200};
 ```
+
 Logger's foreground (text) color (rgb).
 
 ```cpp
 static constexpr const char * logger_format {"[{:%H:%M:%S}]"};
 ```
+
 Logger's format. See format specifications [here](https://fmt.dev/latest/syntax.html#format-specification-mini-language)
 
 
@@ -182,11 +193,13 @@ Level's paramaters are divided into two groups, global parameters and level-spec
 ```cpp
 static constexpr bool show_level {true};
 ```
+
 Whether or not level's name should be displayed or not.
 
 ```cpp
 static constexpr const char* level_format {"({:>7})"};
 ```
+
 Level's format. See format specifications [here](https://fmt.dev/latest/syntax.html#format-specification-mini-language)
 
 #### Specific
@@ -195,16 +208,19 @@ Replace `<level>` by corresponding level's, e.g for debug, `<prefix>_fg` -> `deg
 ```cpp
 static constexpr bool show_<prefix>_bg {false};
 ```
+
 Whether or not a colored background for level's name should be displayed or not.
 
 ```cpp
 static constexpr fmt::rgb <prefix>_bg {20,20,20};
 ```
+
 Level's background color (rgb).
 
 ```cpp
 static constexpr fmt::rgb <prefix>_fg {200,200,200};
 ```
+
 Level's foreground (text) color (rgb).
 
 
@@ -213,28 +229,33 @@ Level's foreground (text) color (rgb).
 ```cpp
 static constexpr bool add_new_line {true};
 ```
+
 Whether or not a new line should added at the end or not.
 
 ```cpp
 static constexpr fmt::text_style message_style {};
 ```
+
 Message's style. It is advised to set only emphasis, are foreground and background color
 will most likely be overriden.
 
 ```cpp
 static constexpr bool inherit_level_style {false};
 ```
+
 Whether or not message's style should be exactly like current level's style.
 
 ```cpp
 static constexpr bool propagate_level_fg {true};
 ```
+
 If `inherit_level_style` is `false`, dictates whether or not message's foreground
 should be exactly the same as level's one.
 
 ```cpp
 static constexpr bool propagate_level_bg {false};
 ```
+
 If `inherit_level_style` is `false`, dictates whether or not message's background 
 should be exactly the same as level's one.
 

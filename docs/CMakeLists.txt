@@ -59,20 +59,26 @@ else()
 	set(DOXYGEN_PROJECT_ROOT "${PROJECT_SOURCE_DIR}/")
 	set(DOXYGEN_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/doxygen")
 
-	configure_file(${CMAKE_CURRENT_LIST_DIR}/Doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
-	configure_file(${CMAKE_CURRENT_LIST_DIR}/conf.py ${CMAKE_CURRENT_BINARY_DIR}/conf.py)
+	configure_file(${CMAKE_CURRENT_LIST_DIR}/Doxyfile ${DOXYGEN_OUTPUT_DIRECTORY}/Doxyfile)
+	configure_file(${CMAKE_CURRENT_LIST_DIR}/conf.py ${DOXYGEN_OUTPUT_DIRECTORY}/conf.py)
+
+	SET(DOC_ASSETS 
+		"${PROJECT_SOURCE_DIR}/assets/output.png"
+	)
 
 	add_custom_target(
 	  GenerateDocs
 	  ${CMAKE_COMMAND} -E make_directory "${DOXYGEN_OUTPUT_DIRECTORY}"
-	  COMMAND python "${m.css_SOURCE_DIR}/documentation/doxygen.py" "${CMAKE_CURRENT_BINARY_DIR}/conf.py" --debug
+	  COMMAND python "${m.css_SOURCE_DIR}/documentation/doxygen.py" "${DOXYGEN_OUTPUT_DIRECTORY}/conf.py" --debug
 	  COMMAND echo "Docs written to: ${DOXYGEN_OUTPUT_DIRECTORY}"
 	  WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
 	  SOURCES
 		"conf.py"
 		"Doxyfile"
 		"pages/about.dox"
+		${DOC_ASSETS}
 	)
+	ADD_ASSETS(GenerateDocs "${PROJECT_SOURCE_DIR}/assets" "${DOXYGEN_OUTPUT_DIRECTORY}/html/assets")
 
 	# Convenience target to open docs
 	add_custom_target(
@@ -80,4 +86,5 @@ else()
 	  COMMAND "${DOXYGEN_OUTPUT_DIRECTORY}/html/index.html"
 	  WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
 	)
+
 endif()
