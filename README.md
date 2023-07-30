@@ -11,6 +11,7 @@ struct my_logger : public slog::Logger<my_logger>
 {
 	// Override / customize your parameters
 	static constexpr const char * logger_name {"cool_logger"}; 
+	static constexpr bool use_message_style {true}; 
 	static constexpr bool show_fatal_bg {true}; 
 	static constexpr bool show_success_bg {true}; 
 	static constexpr fmt::rgb fatal_bg {99,7,0}; 
@@ -231,6 +232,17 @@ static constexpr bool add_new_line {true};
 ```
 
 Whether or not a new line should added at the end or not.
+
+```cpp
+static constexpr bool use_message_style {true}; 
+```
+
+Whether or not we override the message style, with or options or the default coloring provided by the string.
+For example, if you want to log a string that is already colored, setting `use_message_style` to `true` will override
+the color by the style infered from our others options.
+In short :
+* If set to `false`, no coloring but the one already present in the string.
+* If set to `true`, maybe some coloring infered by SLog, but not by the string itself.
 
 ```cpp
 static constexpr fmt::text_style message_style {};

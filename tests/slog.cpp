@@ -6,7 +6,7 @@ struct my_logger : public slog::Logger<my_logger>
 {
 	// Override / customize your parameters
 	static constexpr const char * logger_name {"cool_logger"}; 
-	static constexpr bool use_message_style {false}; 
+	static constexpr bool use_message_style {true}; 
 	static constexpr bool show_fatal_bg {true}; 
 	static constexpr bool show_success_bg {true}; 
 	static constexpr fmt::rgb fatal_bg {99,7,0}; 

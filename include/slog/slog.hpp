@@ -409,7 +409,7 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 
 		// --- MESSAGE ---
 		static constexpr bool add_new_line {true};
-		static constexpr bool use_message_style {true};
+		static constexpr bool use_message_style {false};
 		static constexpr fmt::text_style message_style {};
 		static constexpr bool inherit_level_style {false};
 		static constexpr bool propagate_level_fg {true};
