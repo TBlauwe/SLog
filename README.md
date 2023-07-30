@@ -1,4 +1,4 @@
-# Cpp library starter project
+# SLog - A simple logging library
 
 Opitionated and simple logging library I use across my project, 
 that is easily customizable. It is built around **[FMT](https://github.com/fmtlib/fmt)**.
