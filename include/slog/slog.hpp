@@ -492,9 +492,13 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 			}
 
 			if constexpr (Self::use_message_style)
+			{
 				fmt::format_to(std::back_inserter(out), _message_style, fmt, std::forward<Args>(args)...);
+			}
 			else
-				fmt::format_to(std::back_inserter(out), {}, fmt, std::forward<Args>(args)...);
+			{
+				fmt::format_to(std::back_inserter(out), fmt::runtime(fmt), std::forward<Args>(args)...);
+			}
 			return {out.data(), out.size()};
 #else
 			return {};
