@@ -47,7 +47,7 @@ set(SOURCE_LIST
 
 add_executable(benchmarks ${SOURCE_LIST})
 target_compile_features(benchmarks PRIVATE cxx_std_20)
-target_link_libraries(benchmarks PRIVATE my_lib benchmark::benchmark)
+target_link_libraries(benchmarks PRIVATE slog benchmark::benchmark)
 set_target_properties(benchmarks PROPERTIES OUTPUT_NAME "Benchmarks")
 set_target_properties(benchmarks PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_EXE_DIR}")
 

@@ -1,68 +1,236 @@
 # Cpp library starter project
 
-Opitionated adn simple template I use for my libraries and as a learning process.
+Opitionated and simple logging library I use across my project, 
+that is easily customizable. It is built around **[FMT](https://github.com/fmtlib/fmt)**.
+
+## Usage
+
+```cpp
+// Define a logger by inheriting CRTP class slog::Logger
+struct my_logger : public slog::Logger<my_logger>
+{
+	// Override / customize your parameters
+	static constexpr const char * logger_name {"cool_logger"}; 
+	static constexpr bool show_fatal_bg {true}; 
+	static constexpr bool show_success_bg {true}; 
+	static constexpr fmt::rgb fatal_bg {99,7,0}; 
+	static constexpr fmt::rgb fatal_fg {232,80,69}; 
+};
+
+// Now anywhere in code
+my_logger::debug("my message with or without args {}", 1);
+my_logger::info("my message with or without args {}", 2);
+my_logger::success("my message with or without args {}", 3);
+my_logger::warn("my message with or without args {}", 4);
+my_logger::error("my message with or without args {}", 5);
+my_logger::fatal("my message with or without args {}", 6);
+
+
+// SLog also provides some macros to log only if a condition is verified :
+slog_debug_if(my_logger, true, "my message with a condition {}", 7);
+slog_info_if(my_logger, true, "my message with a condition {}", 8);
+slog_success_if(my_logger, true, "my message with a condition {}", 9);
+slog_warn_if(my_logger, true, "my message with a condition {}", 10);
+slog_error_if(my_logger, true, "my message with a condition {}", 11);
+slog_fatal_if(my_logger, true, "my message with a condition {}", 12);
+
+// a default logger is also provided
+slog::log::debug("my message with or without args {}", 13);
+slog::log::info("my message with or without args {}", 14);
+slog::log::success("my message with or without args {}", 15);
+slog::log::warn("my message with or without args {}", 16);
+slog::log::error("my message with or without args {}", 17);
+slog::log::fatal("my message with or without args {}", 18);
+
+// An assert is also provided, that abort if condition is false
+slog_assert(my_logger, false, "Abort if false {}", 13);
+```
+
+Here what it looks like on the terminal :
+
+![alt text](imgs/output.png "Output")
 
 ## Features
-* Tests build with **[Doctest](https://github.com/doctest/doctest)**
-* Benchmarks build with **[Google Benchmark](https://github.com/google/benchmark)**
-* Docs build with Doxygen and **[m.css](https://mcss.mosra.cz/)** from **[Magnum Engine](https://magnum.graphics/)**
-* Dependencies downloaded with **[CPM](https://github.com/cpm-cmake/)**.
 
+* Quick integration and removal.
+* Static logger configuratable through static members, without singleton pattern.
+* Multiple loggers with different configuration.
+* Colored output
 
-## Getting started
+## Integration
 
-Download the source code and replace the following identifiers :
+Using **[CPM](https://github.com/cpm-cmake/)** :
+```
+CPMAddPackage(
+	NAME slog
+	GITHUB_REPOSITORY tblauwe/slog
+	GIT_TAG master
+)
 
-* `my_lib` : cmake target, folder name
-* `MY_LIB` : cmake project name and cmake variables prefix
-* `ml` : namespace, only in source files.
+target_link_libraries(your_target PUBLIC slog)
+```
 
-Set `CPM_SOURCE_CACHE` to an adequate location. It is a **[CPM](https://github.com/cpm-cmake/)** options 
-that tells it where to download libraries.
+## Description
 
-Executables location are specified by variable `PROJECT_EXE_DIR` in the main `CMakeLists.txt`. 
-By default, it is set to : `${PROJECT_SOURCE_DIR}/bin`.
-Note that it is not prefixed by `MY_LIB`. As of now, it is only set when the library is built as the main project.
-So I thought it would be nice to follow cmake convention like `PROJECT_SOURCE_DIR`.
+Thanks to **[CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern)**, loggers
+are static struct configured with only static members. 
+
+Speed is not the main concern are it is designed to be removed from build release.
+Thread-safety as not been checked for now.
+
 
 ## Dependencies
 
-Dependencies are downloaded with **[CPM](https://github.com/cpm-cmake/)**.
+ * **[FMT](https://github.com/fmtlib/fmt)**, tested with version `10.0.0`
+
+If building as main project, dependencies are automaticaly downloaded with **[CPM](https://github.com/cpm-cmake/)**.
 This step can be skipped by setting `MY_LIB_SKIP_DEPENDENCIES` to `ON`. By default, it is `OFF` if it is the main
 project, `ON` otherwise.
 
-Each dependencies version can be override by setting `CPM_MY_DEP_VERSION` to a git tag, e.g `master`, `v3.12`, `1.0`, etc.
+Setting `CPM_FMT_VERSION` will override the downloaded version (`10.0.0` by default).
 
-To reduce boilerplates, `cpm/tools.cmake` provide several functions and macros :
+## Configuration
 
-* `macro(ADD_VERSION)` is a macro to set an option specifying a third_library version :
+First, let's assume you have the following logger : 
+
+```cpp
+struct my_logger : public slog::Logger<my_logger>
+{
+	// We will add configuration parameters by adding static constexpr member
+};
 ```
-ADD_VERSION(NAME fmt VERSION "10.0.0")
-````
 
-* `macro(DOWNLOAD_LIBRARY)` is a macro wrapping `CPMAddPackage` to use version provided by the corresponding option :
+There is four parameters category :
+* __Time__ : parameters related to time display
+* __Logger__ : parameters related to logger name display
+* __Level__ : parameters related to log's level display
+* __Message__ : parameters related to message display
+
+Here are the available parameters for each category (with default values):
+
+### Time
+
+```cpp
+static constexpr bool show_time {true};
 ```
-DOWNLOAD_LIBRARY(
-  NAME fmt
-  TARGETS fmt fmt-header-only
-  GITHUB_REPOSITORY fmtlib/fmt
-  OPTIONS
-    "FMT_INSTALL OFF"
-)
-````
+Whether or not time should be displayed or not.
 
-It can mostly be used the same as `CPMAddPackage`. 
-By default, it will also try to suppress warnings of targets specified by `TARGETS` or `NAME` if no `TARGETS` are provided.
-It can by skipped by specifying `NO_SILENCE_WARNINGS`.
+```cpp
+static constexpr bool show_time_bg {false};
+```
+Whether or not a colored background for time should be displayed or not.
 
-> Sadly, it doesn't work for now ! Trying to work around https://www.foonathan.net/2018/10/cmake-warnings/.
+```cpp
+static constexpr fmt::rgb time_bg {20,20,20};
+```
+Time's background color (rgb).
 
-## Verbosity
-The cmake output is very verbose. I like to be able to read easily my output. It is displayed according to my taste
-But, it will most likely annoy others that just want the relevant information, especially when used as a third-library.
-It is less relevant when build as the main project.
+```cpp
+static constexpr fmt::rgb time_fg {100,100,100};
+```
+Time's foreground (text) color (rgb).
 
-For now, I don't provide an option for a less verbose output and I guess `QUIET` can be used when using `FetchContent'.
+```cpp
+static constexpr const char * time_format {"[{:%H:%M:%S}]"};
+```
+Time's format. See format specifications [here](https://fmt.dev/latest/syntax.html#chrono-specs)
+
+
+### Logger
+```cpp
+static constexpr bool show_logger_name {true};
+```
+Whether or not logger's name should be displayed or not.
+
+```cpp
+static constexpr const char * logger_name {"default"};
+```
+Name to display
+
+```cpp
+static constexpr bool show_logger_bg {false};
+```
+Whether or not a colored background for logger name should be displayed or not.
+
+```cpp
+static constexpr fmt::rgb logger_bg {20,20,20};
+```
+Logger's background color (rgb).
+
+```cpp
+static constexpr fmt::rgb Logger_fg {200,200,200};
+```
+Logger's foreground (text) color (rgb).
+
+```cpp
+static constexpr const char * logger_format {"[{:%H:%M:%S}]"};
+```
+Logger's format. See format specifications [here](https://fmt.dev/latest/syntax.html#format-specification-mini-language)
+
+
+### Level
+
+Level's paramaters are divided into two groups, global parameters and level-specific
+#### Global
+
+```cpp
+static constexpr bool show_level {true};
+```
+Whether or not level's name should be displayed or not.
+
+```cpp
+static constexpr const char* level_format {"({:>7}) : "};
+```
+Level's format. See format specifications [here](https://fmt.dev/latest/syntax.html#format-specification-mini-language)
+
+#### Specific
+Replace `<level>` by corresponding level's, e.g for debug, `<prefix>_fg` -> `degub_fg`.
+
+```cpp
+static constexpr bool show_<prefix>_bg {false};
+```
+Whether or not a colored background for level's name should be displayed or not.
+
+```cpp
+static constexpr fmt::rgb <prefix>_bg {20,20,20};
+```
+Level's background color (rgb).
+
+```cpp
+static constexpr fmt::rgb <prefix>_fg {200,200,200};
+```
+Level's foreground (text) color (rgb).
+
+
+### Message
+
+```cpp
+static constexpr bool add_new_line {true};
+```
+Whether or not a new line should added at the end or not.
+
+```cpp
+static constexpr fmt::text_style message_style {};
+```
+Message's style. It is advised to set only emphasis, are foreground and background color
+will most likely be overriden.
+
+```cpp
+static constexpr bool inherit_level_style {false};
+```
+Whether or not message's style should be exactly like current level's style.
+
+```cpp
+static constexpr bool propagate_level_fg {true};
+```
+If `inherit_level_style` is `false`, dictates whether or not message's foreground
+should be exactly the same as level's one.
+
+```cpp
+static constexpr bool propagate_level_bg {false};
+```
+If `inherit_level_style` is `false`, dictates whether or not message's background 
+should be exactly the same as level's one.
 
 
 ## Additional targets
@@ -129,6 +297,7 @@ Replace `<baseline>` and `<comparison>` with `.json` files obtained when running
 
 ## Credits
 
+* **[FMT](https://github.com/fmtlib/fmt)**
 * **[Doctest](https://github.com/doctest/doctest)**
 * **[m.css](https://mcss.mosra.cz/)** from **[Magnum Engine](https://magnum.graphics/)**
 * **[Google Benchmark](https://github.com/google/benchmark)**

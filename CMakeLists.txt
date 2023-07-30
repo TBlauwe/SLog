@@ -10,10 +10,10 @@
 #
 #                  Noteworthy cmake folders :
 #                  * extern/ : contains cmake files to find dependencies using CPM.
-#                              Can be skipped by setting MYLIB_SKIP_DEPENDENCIES 
+#                              Can be skipped by setting SLOG_SKIP_DEPENDENCIES 
 #
 #                  Noteworthy cmake options :
-#                  * MYLIB_SKIP_DEPENDENCIES : skip dependencies download and build (with CPM)
+#                  * SLOG_SKIP_DEPENDENCIES : skip dependencies download and build (with CPM)
 #
 #                  Noteworthy defines :
 #                  * TRACY_ENABLE : If defined, instructions related to tracy will be included.
@@ -34,9 +34,9 @@ endif()
 
 
 # ----- Project information
-project(MYLIB
+project(SLOG
         VERSION 0.1.0
-        DESCRIPTION "MY_DESC"
+        DESCRIPTION "A small opinionated logging library built around fmt."
         HOMEPAGE_URL "https://github.com"
         LANGUAGES C CXX
 )
@@ -44,12 +44,12 @@ project(MYLIB
 
 # --- Include guard
 # Only do these if this is the main project, and not if it is included through add_subdirectory
-if (NOT DEFINED MYLIB_MASTER_PROJECT)
-  set(MYLIB_MASTER_PROJECT OFF)
-  set(MYLIB_NOT_MASTER_PROJECT ON)
+if (NOT DEFINED SLOG_MASTER_PROJECT)
+  set(SLOG_MASTER_PROJECT OFF)
+  set(SLOG_NOT_MASTER_PROJECT ON)
   if (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-    set(MYLIB_MASTER_PROJECT ON)
-    set(MYLIB_NOT_MASTER_PROJECT OFF)
+    set(SLOG_MASTER_PROJECT ON)
+    set(SLOG_NOT_MASTER_PROJECT OFF)
 	set(CMAKE_CXX_EXTENSIONS OFF) # Let's ensure -std=c++xx instead of -std=g++xx
 	set_property(GLOBAL PROPERTY USE_FOLDERS ON) # Let's nicely support folders in IDEs
 	# Convience variable so that executables (tests, benchmarks, experiments, examples) are outputed to a specific folder.
@@ -61,7 +61,7 @@ endif ()
 # ------------------------------------------------------------------------------
 # --- CMake options
 # ------------------------------------------------------------------------------
-option(MYLIB_SKIP_DEPENDENCIES "If true, then dependencies will not be downloaded and build" ${MYLIB_NOT_MASTER_PROJECT})
+option(SLOG_SKIP_DEPENDENCIES "If true, then dependencies will not be downloaded and build" ${SLOG_NOT_MASTER_PROJECT})
 
 
 # ------------------------------------------------------------------------------
@@ -79,15 +79,15 @@ include(cmake/tools.cmake)
 # ------------------------------------------------------------------------------
 # --- Dependencies
 # ------------------------------------------------------------------------------
-if(NOT ${MYLIB_SKIP_DEPENDENCIES})
+if(NOT ${SLOG_SKIP_DEPENDENCIES})
 	unset(missing_components)
 	include(extern/misc.cmake)
 endif()
 
-banner_2(CHECK_START "Configuring target : my_lib")
+banner_2(CHECK_START "Configuring target : slog")
 if(missing_components)
     message(FATAL_ERROR "Missing dependencies: ${missing_components}")
-elseif(NOT ${MYLIB_SKIP_DEPENDENCIES})
+elseif(NOT ${SLOG_SKIP_DEPENDENCIES})
     message("No dependencies missing")
 endif()
 
@@ -96,11 +96,10 @@ endif()
 # --- Sources & Headers
 # ------------------------------------------------------------------------------
 SET(SOURCE_LIST
-    "src/my_lib_source.cpp"
 )
 
 SET(HEADER_LIST
-    "include/my_lib/my_lib_header.hpp"
+    "include/slog/slog.hpp"
 )
 
 # ------------------------------------------------------------------------------
@@ -109,23 +108,23 @@ SET(HEADER_LIST
 # No assets here
 
 # ------------------------------------------------------------------------------
-# --- Target : my_lib
+# --- Target : slog
 # ------------------------------------------------------------------------------
-add_library (my_lib ${SOURCE_LIST} ${HEADER_LIST})
-target_include_directories(my_lib PUBLIC include)
-target_link_libraries(my_lib PUBLIC 
+add_library (slog INTERFACE ${SOURCE_LIST} ${HEADER_LIST})
+target_include_directories(slog INTERFACE include)
+target_link_libraries(slog INTERFACE
     misc_deps
 )
-target_compile_features(my_lib PRIVATE cxx_std_20)
-target_compile_options(my_lib PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/Zc:preprocessor>) # if using __VA_OPT__, we enforce latest preprocessor on MSVC
-target_compile_options(my_lib PUBLIC $<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->) # being a cross-platform target, we enforce standards conformance on MSVC
+target_compile_features(slog INTERFACE cxx_std_17)
+target_compile_options(slog INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/Zc:preprocessor>) # if using __VA_OPT__, we enforce latest preprocessor on MSVC
+target_compile_options(slog INTERFACE $<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->) # being a cross-platform target, we enforce standards conformance on MSVC
 
-if(${MYLIB_MASTER_PROJECT})
-  target_set_compile_warnings_cxx(my_lib)
+if(${SLOG_MASTER_PROJECT})
+  target_set_compile_warnings_cxx(TARGET slog SCOPE INTERFACE)
 endif()
 
 outdent()
-if(TARGET my_lib)
+if(TARGET slog)
     message(CHECK_PASS "done.")
 else()
     message(CHECK_FAIL "failed.")
@@ -137,7 +136,7 @@ endif()
 # ------------------------------------------------------------------------------
 
 # Only available if this is the main project
-if(${MYLIB_MASTER_PROJECT})
+if(${SLOG_MASTER_PROJECT})
   include(CTest)
   add_subdirectory(benchmarks)
   add_subdirectory(docs)
