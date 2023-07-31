@@ -9,7 +9,7 @@
 #                  CPM noteworthy options :
 #                  * CPM_SOURCE_CACHE : download location.
 #                  * CPM_USE_LOCAL_PACKAGES : search for locally installed dependencies first.
-#                  * CPM_LOCAL_PACKAGES_ONLY : error if dependecy not found locally.
+#                  * CPM_LOCAL_PACKAGES_ONLY : error if dependency not found locally.
 # ------------------------------------------------------------------------------ 
 banner_2(CHECK_START "Configuring target : docs")
 

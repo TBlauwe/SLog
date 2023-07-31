@@ -9,11 +9,8 @@
     credits of your commercial app.
 
   <p>
-  <aside class="m-block m-default">
   <h3>Default block</h3>
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ultrices
-  a erat eu suscipit. <a href="#">Link.
-  </a>
-	</aside>
+  a erat eu suscipit. <a href="#">Link.</a>
   </p>
 */

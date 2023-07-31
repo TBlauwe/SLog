@@ -60,6 +60,11 @@ Here what it looks like on the terminal :
 
 ## Integration
 
+* Requires a __C++17__ compiler. Tested with (on windows 11) : 
+	* Clang-cl `15`
+	* MSVC `19.36`
+
+
 Using **[CPM](https://github.com/cpm-cmake/)** :
 ```
 CPMAddPackage(

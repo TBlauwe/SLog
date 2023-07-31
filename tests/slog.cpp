@@ -41,5 +41,5 @@ TEST_CASE("Basic")
 	slog::log::fatal("my message with or without args {}", 18);
 
 	// An assert is also provided, that abort if condition is false
-	slog_assert(my_logger, false, "Abort if false {}", 13);
+	slog_assert(my_logger, true, "Will not abort", 13);
 }

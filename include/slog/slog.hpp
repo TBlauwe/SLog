@@ -1,6 +1,6 @@
 /*****************************************************************//**
  * \file   slog.hpp
- * \brief  Main header file implementing logger classs.
+ * \brief  Main header file implementing logger class.
  *
  * Usage :
 \code{.cpp}
@@ -255,6 +255,7 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 /**
  * \brief SLog namespace containing a default logger \c log, the base logger template \c Logger<Self> and log levels.
  */
+
 namespace slog
 {
 	/**
@@ -423,7 +424,7 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 		inline static void log(Input&& fmt, Args&&... args)
 		{
 #ifndef _NDEBUG
-			if constexpr(add_new_line)
+			if constexpr(Self::add_new_line)
 				fmt::print("{}\n", Self::template to_string<level>(std::forward<Input>(fmt), std::forward<Args>(args)...));
 			else
 				fmt::print("{}", Self::template to_string<level>(std::forward<Input>(fmt), std::forward<Args>(args)...));
