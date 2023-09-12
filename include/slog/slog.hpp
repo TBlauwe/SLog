@@ -13,7 +13,7 @@ struct my_logger : public Logger<my_logger>
 	// Override / customize your parameters
 	static constexpr bool show_time {false};
 	static constexpr bool show_logger_name {false};
-	static constexpr const char * level_format {"[{:>7}] "};
+	static constexpr std::string_view level_format {"[{:>7}] "};
 };
 
 // Now anywhere in code
@@ -286,7 +286,7 @@ struct my_logger : public Logger<my_logger>
 	// Override / customize your parameters
 	static constexpr bool show_time {false};
 	static constexpr bool show_logger_name {false};
-	static constexpr const char * level_format {"[{:>7}] "};
+	static constexpr std::string_view level_format {"[{:>7}] "};
 };
 
 // Now anywhere in code
@@ -363,12 +363,12 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 		static constexpr bool show_time_bg {false};
 		static constexpr fmt::rgb time_bg {20,20,20};
 		static constexpr fmt::rgb time_fg {100,100,100};
-		static constexpr const char * time_format {"[{:%H:%M:%S}]"};
+		static constexpr std::string_view time_format {"[{:%H:%M:%S}]"};
 
 
 		// --- LOGGER ---
 		static constexpr bool show_logger_name {true};
-		static constexpr const char * logger_name {"default"};
+		static constexpr std::string_view logger_name {"default"};
 		static constexpr bool show_logger_bg {false};
 		static constexpr fmt::rgb logger_bg {20,20,20};
 		static constexpr fmt::rgb logger_fg {200,200,200};
@@ -514,6 +514,6 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 	{
 		static constexpr bool show_time {false};
 		static constexpr bool show_logger_name {false};
-		static constexpr const char * level_format {"[{:>7}]"};
+		static constexpr std::string_view level_format {"[{:>7}]"};
 	};
 }

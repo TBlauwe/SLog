@@ -1,9 +1,59 @@
 # SLog - A simple logging library
 
-Opitionated and simple logging library I use across my project, 
-that is easily customizable. It is built around **[FMT](https://github.com/fmtlib/fmt)**.
+Opinionated and simple logging library built around **[FMT](https://github.com/fmtlib/fmt)**.
 
-## Usage
+
+## Features
+
+* Static logger
+* Multiple loggers with different configuration
+  * Override members to customize your logger. See [Basic Usage](#Basic-Usage) below.
+* Multi-colored output
+
+
+## Basic Usage
+
+
+### Default logger
+
+
+```cpp
+slog::log::debug("my message with or without args {}", 13);
+slog::log::info("my message with or without args {}", 14);
+slog::log::success("my message with or without args {}", 15);
+slog::log::warn("my message with or without args {}", 16);
+slog::log::error("my message with or without args {}", 17);
+slog::log::fatal("my message with or without args {}", 18);
+```
+
+![alt text](assets/output_1.png "Output")
+
+
+### Macros
+
+__SLog__ provides some macros to log (or assert) only if a condition is evaluated to true (or false).
+
+```cpp
+slog_debug_if(slog::log, true, "Default logger - condition evaluated to true - a debug message with an argument of value {}", 1);
+slog_info_if(slog::log, true, "Default logger - condition evaluated to true - an info message with an argument of value : {}", 2);
+slog_success_if(slog::log, true, "Default logger - condition evaluated to true - a success message with an argument of value : {}", 3);
+slog_warn_if(slog::log, true, "Default logger - condition evaluated to true - a warning message with an argument of value : {}", 4);
+slog_error_if(slog::log, true, "Default logger - condition evaluated to true - an error message with an argument of value : {}", 5);
+slog_fatal_if(slog::log, true, "Default logger - condition evaluated to true - a fatal message with an argument of value : {}", 6);
+slog_
+```
+
+![alt text](assets/output_2.png "Output")
+
+```cpp
+slog_assert(my_logger, false, "We trigger an assert", 13);
+```
+
+![alt text](assets/output_4.png "Output")
+
+
+### Custom Logger
+
 
 ```cpp
 // Define a logger by inheriting CRTP class slog::Logger
@@ -18,45 +68,16 @@ struct my_logger : public slog::Logger<my_logger>
 	static constexpr fmt::rgb fatal_fg {232,80,69}; 
 };
 
-// Now anywhere in code
-my_logger::debug("my message with or without args {}", 1);
-my_logger::info("my message with or without args {}", 2);
-my_logger::success("my message with or without args {}", 3);
-my_logger::warn("my message with or without args {}", 4);
-my_logger::error("my message with or without args {}", 5);
-my_logger::fatal("my message with or without args {}", 6);
-
-
-// SLog also provides some macros to log only if a condition is verified :
-slog_debug_if(my_logger, true, "my message with a condition {}", 7);
-slog_info_if(my_logger, true, "my message with a condition {}", 8);
-slog_success_if(my_logger, true, "my message with a condition {}", 9);
-slog_warn_if(my_logger, true, "my message with a condition {}", 10);
-slog_error_if(my_logger, true, "my message with a condition {}", 11);
-slog_fatal_if(my_logger, true, "my message with a condition {}", 12);
-
-// a default logger is also provided
-slog::log::debug("my message with or without args {}", 13);
-slog::log::info("my message with or without args {}", 14);
-slog::log::success("my message with or without args {}", 15);
-slog::log::warn("my message with or without args {}", 16);
-slog::log::error("my message with or without args {}", 17);
-slog::log::fatal("my message with or without args {}", 18);
-
-// An assert is also provided, that abort if condition is false
-slog_assert(my_logger, false, "Abort if false {}", 13);
+my_logger::debug("Custom logger - a debug message with an argument of value {}", 1);
+my_logger::info("Custom logger - an info message with an argument of value : {}", 2);
+my_logger::success("Custom logger - a success message with an argument of value : {}", 3);
+my_logger::warn("Custom logger - a warning message with an argument of value : {}", 4);
+my_logger::error("Custom logger - an error message with an argument of value : {}", 5);
+my_logger::fatal("Custom logger - a fatal message with an argument of value : {}", 6);
 ```
 
-Here what it looks like on the terminal :
+![alt text](assets/output_3.png "Output")
 
-![alt text](assets/output.png "Output")
-
-## Features
-
-* Quick integration and removal.
-* Static logger configuratable through static members, without singleton pattern.
-* Multiple loggers with different configuration.
-* Colored output
 
 ## Integration
 

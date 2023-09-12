@@ -32,6 +32,15 @@ DOWNLOAD_LIBRARY(
 	GITHUB_REPOSITORY onqtam/doctest
 )
 
+# ------------------------------------------------------------------------------
+# --- Target : demo
+# ------------------------------------------------------------------------------
+add_executable(demo demo.cpp)
+target_compile_features(demo PRIVATE cxx_std_20)
+target_link_libraries(demo PRIVATE slog doctest::doctest)
+set_target_properties(demo PROPERTIES OUTPUT_NAME "Demo")
+set_target_properties(demo PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_EXE_DIR}")
+
 
 # ------------------------------------------------------------------------------
 # --- Target : tests
