@@ -1,6 +1,21 @@
 # SLog - A simple logging library
+![C++](https://img.shields.io/badge/c++%2017%20Library-%2300599C.svg?style=for-the-badge&logo=cplusplus&logoColor=white)
+![CMake](https://img.shields.io/badge/CMake-%232B2F33.svg?style=for-the-badge&logo=cmake)
+[![Version](https://img.shields.io/github/v/release/TBlauwe/slog?include_prereleases&style=for-the-badge)](https://github.com/TBlauwe/slog/releases)
+[![MIT](https://img.shields.io/badge/license-TBD-blue.svg?style=for-the-badge)](https://github.com/TBlauwe/slog/blob/master/LICENSE)
+[![Documentation link](https://img.shields.io/badge/Docs-blue?logo=readthedocs&logoColor=white&style=for-the-badge)](https://TBlauwe.github.io/slog/)
+[![Examples](https://img.shields.io/badge/Examples-darkviolet?&style=for-the-badge)](https://TBlauwe.github.io/slog/examples.html)
+
+![Windows GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/TBlauwe/SLog/windows.yaml?style=flat-square&logo=windows10&label=Windows%20(Clang-cl%2C%20MSVC))
+![Ubuntu GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/TBlauwe/SLog/ubuntu.yaml?style=flat-square&logo=ubuntu&logoColor=white&label=Ubuntu%20(Clang%2C%20GCC))
+![MacOS GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/TBlauwe/SLog/ubuntu.yaml?style=flat-square&logo=apple&logoColor=white&label=MacOS%20(Clang%2C%20GCC))
+![Documentation GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/TBlauwe/SLog/documentation.yaml?style=flat-square&logo=github&logoColor=white&label=Documentation)
+
+<div align="center">
 
 Opinionated and simple logging library built around **[FMT](https://github.com/fmtlib/fmt)**.
+
+</div>
 
 
 ## Features
@@ -9,6 +24,37 @@ Opinionated and simple logging library built around **[FMT](https://github.com/f
 * Multiple loggers with different configuration
   * Override members to customize your logger. See [Basic Usage](#Basic-Usage) below.
 * Multi-colored output
+
+
+## Getting started
+
+### Installation
+
+Require a __C++17__ compiler. Tested with (on windows 11) : 
+* Clang-cl `15`
+* MSVC `19.36`
+
+
+Using **[CPM](https://github.com/cpm-cmake/)**, add the following lines to your cmake file:
+
+```cmake
+CPMAddPackage(
+  NAME slog
+  GITHUB_REPOSITORY TBlauwe/slog
+)
+
+target_link_libraries(your_target PUBLIC slog)
+```
+
+<details>
+<summary> CMake options </summary>
+
+| Options | Default | Description |
+| ---: | :---: | :--- |
+| `SLOG_DOWNLOAD_DEPENDENCIES` | `false` in consumer mode, `true` otherwise | Enable automatic dependencies downloading with **[CPM](https://github.com/cpm-cmake/)** |
+| `CPM_MY_DEPENDENCY_VERSION` | `true` in consumer mode, `false` otherwise | Override a dependency's version. Value must be a git tag, e.g `master`, `v3.12`, `1.0` |
+
+</details>
 
 
 ## Basic Usage
@@ -40,7 +86,6 @@ slog_success_if(slog::log, true, "Default logger - condition evaluated to true -
 slog_warn_if(slog::log, true, "Default logger - condition evaluated to true - a warning message with an argument of value : {}", 4);
 slog_error_if(slog::log, true, "Default logger - condition evaluated to true - an error message with an argument of value : {}", 5);
 slog_fatal_if(slog::log, true, "Default logger - condition evaluated to true - a fatal message with an argument of value : {}", 6);
-slog_
 ```
 
 ![alt text](assets/output_2.png "Output")
@@ -79,24 +124,6 @@ my_logger::fatal("Custom logger - a fatal message with an argument of value : {}
 ![alt text](assets/output_3.png "Output")
 
 
-## Integration
-
-* Requires a __C++17__ compiler. Tested with (on windows 11) : 
-	* Clang-cl `15`
-	* MSVC `19.36`
-
-
-Using **[CPM](https://github.com/cpm-cmake/)** :
-```
-CPMAddPackage(
-	NAME slog
-	GITHUB_REPOSITORY tblauwe/slog
-	GIT_TAG master
-)
-
-target_link_libraries(your_target PUBLIC slog)
-```
-
 ## Description
 
 Thanks to **[CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern)**, loggers
@@ -108,8 +135,7 @@ per call. Thread-safety as not been checked for now.
 
 Some defines :
 * `NO_SLOG_LOG` : if defined, function calls are empty, macros are set to ((void)0)
-* `NO_SLOG_ASSERT` : if defined, assert macro is set to ((void)0)
-* `SLOG_TRACY_ZONE` : if defined, tracy zones are added; (TODO)
+* `NO_SLOG_ASSERT` : if defined, assert macro is set to `((void)0)`
 
 
 ## Dependencies
@@ -117,10 +143,10 @@ Some defines :
  * **[FMT](https://github.com/fmtlib/fmt)**, tested with version `10.0.0`
 
 If building as main project, dependencies are automaticaly downloaded with **[CPM](https://github.com/cpm-cmake/)**.
-This step can be skipped by setting `MY_LIB_SKIP_DEPENDENCIES` to `ON`. By default, it is `OFF` if it is the main
-project, `ON` otherwise.
+This step can be skipped by setting `SLOG_DOWNLOAD_DEPENDENCIES` to `ON`. 
 
 Setting `CPM_FMT_VERSION` will override the downloaded version (`10.0.0` by default).
+
 
 ## Configuration
 
@@ -298,45 +324,6 @@ If `inherit_level_style` is `false`, dictates whether or not message's backgroun
 should be exactly the same as level's one.
 
 
-## Additional targets
-
-Tests, docs and benchmarks adds additional targets. It was choosen to not propose option to build them, as they will
-be built only if this is the main project.
-
-## Documentation
-
-Two targets are provided :
-
-* `BuildDocs` uses **[m.css](https://mcss.mosra.cz/)** from **[Magnum Engine](https://magnum.graphics/)** to build the documentation.
-* `OpenDocs` is a convenience target to open docs without the hassle of finding it.
-
-The following tools are needed :
-* Doxygen, 
-* jinja2 
-* Pygments 
-
-### Instructions
-
-On MacOs :
-```
-brew install doxygen
-pip3 install jinja2 Pygments
-```
-
-On windows using chocolatey (need elevated privileges) :
-```
-choco install doxygen.install
-choco install python
-pip3 install jinja2 Pygments
-```
-
-> Make sure to add doxygen to your path !
-
-## Tests
-
-The library used for testing is [Doctest](https://github.com/doctest/doctest).
-
-
 ## Benchmarks
 
 The library used for benchmarking is [Google benchmark](https://github.com/google/benchmark).
@@ -380,30 +367,8 @@ BM_string_info_with_1_arg        579 ns          516 ns      1000000
 ```
 
 
-### Configurations
-
-If you want to pass more options to tune the benchmarking, see 
-[Google benchmark usage guide](https://github.com/google/benchmark/blob/main/docs/user_guide.md).
-
-Alternitavely, you can use `bin\benchmarks\run_benchmarks.py` python script, to run benchmarks with a predefined set of options.
-
-```
-py run_benchmarks.py Benchmarks.exe -n SomeName
-```
-
-This line will generate a `.json` file with 'SomeName' in its name. It will also repeat benchmarks 10 times and compute the mean, median, variance, etc.
-
-To compare two benchmarks, you can use the following command :
-
-```
-py tools/compare.py benchmarks <baseline> <comparison>
-```
-
-Replace `<baseline>` and `<comparison>` with `.json` files obtained when running your benchmarks.
-
 ## Credits
 
 * **[FMT](https://github.com/fmtlib/fmt)**
 * **[Doctest](https://github.com/doctest/doctest)**
-* **[m.css](https://mcss.mosra.cz/)** from **[Magnum Engine](https://magnum.graphics/)**
 * **[Google Benchmark](https://github.com/google/benchmark)**
