@@ -34,12 +34,12 @@ if (PROJECT_IS_TOP_LEVEL)
 	find_package(Git)
 endif ()
 
+# --- Project options
+option(${PROJECT_NAME}_DOWNLOAD_DEPENDENCIES "Disable automatic download of dependencies with CPM." ${PROJECT_IS_TOP_LEVEL})
+
 
 include(cmake/tools.cmake)
 
-
-# --- Project options
-option(${PROJECT_NAME}_DOWNLOAD_DEPENDENCIES "Disable automatic download of dependencies with CPM." ${PROJECT_IS_TOP_LEVEL})
 
 
 # ------------------------------------------------------------------------------
@@ -92,7 +92,7 @@ section(CHECK_START "Configuring slog")
 		"$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>"
 	)
 
-	target_link_libraries(slog INTERFACE fmt-header-only)
+	target_link_libraries(slog INTERFACE fmt)
 
 	target_compile_features(slog INTERFACE cxx_std_17)
 	target_compile_options(slog INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/Zc:preprocessor>) # if using __VA_OPT__, we enforce latest preprocessor on MSVC
