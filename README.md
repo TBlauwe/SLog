@@ -2,14 +2,11 @@
 ![C++](https://img.shields.io/badge/c++%2017%20Library-%2300599C.svg?style=for-the-badge&logo=cplusplus&logoColor=white)
 ![CMake](https://img.shields.io/badge/CMake-%232B2F33.svg?style=for-the-badge&logo=cmake)
 [![Version](https://img.shields.io/github/v/release/TBlauwe/slog?include_prereleases&style=for-the-badge)](https://github.com/TBlauwe/slog/releases)
-[![MIT](https://img.shields.io/badge/license-TBD-blue.svg?style=for-the-badge)](https://github.com/TBlauwe/slog/blob/master/LICENSE)
-[![Documentation link](https://img.shields.io/badge/Docs-blue?logo=readthedocs&logoColor=white&style=for-the-badge)](https://TBlauwe.github.io/slog/)
-[![Examples](https://img.shields.io/badge/Examples-darkviolet?&style=for-the-badge)](https://TBlauwe.github.io/slog/examples.html)
+[![MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](https://github.com/TBlauwe/slog/blob/master/LICENSE)
 
 ![Windows GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/TBlauwe/SLog/windows.yaml?style=flat-square&logo=windows10&label=Windows%20(Clang-cl%2C%20MSVC))
 ![Ubuntu GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/TBlauwe/SLog/ubuntu.yaml?style=flat-square&logo=ubuntu&logoColor=white&label=Ubuntu%20(Clang%2C%20GCC))
 ![MacOS GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/TBlauwe/SLog/ubuntu.yaml?style=flat-square&logo=apple&logoColor=white&label=MacOS%20(Clang%2C%20GCC))
-![Documentation GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/TBlauwe/SLog/documentation.yaml?style=flat-square&logo=github&logoColor=white&label=Documentation)
 
 <div align="center">
 
