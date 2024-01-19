@@ -1,6 +1,6 @@
 ﻿#include <slog/reporter.hpp>
 
-NumericalConsoleReporter::NumericalConsoleReporter(const char * title)
+slog::NumericalConsoleReporter::NumericalConsoleReporter(const char * title)
 {
     // Header
     fmt::format_to(std::back_inserter(out), fmt::emphasis::bold,
@@ -13,7 +13,7 @@ NumericalConsoleReporter::NumericalConsoleReporter(const char * title)
     fmt::format_to(std::back_inserter(out), "Percentage\n");
 }
 
-void NumericalConsoleReporter::add_line(const char *name, float begin, float end)
+void slog::NumericalConsoleReporter::add_line(const char *name, float begin, float end)
 {
     float percentage = begin != 0.f ? (end - begin) / begin * 100 : 0.f;
     auto background = line_count % 2 ? fmt::bg(odd_line_color) : fmt::bg(even_line_color);
@@ -36,7 +36,7 @@ void NumericalConsoleReporter::add_line(const char *name, float begin, float end
     line_count++;
 }
 
-void NumericalConsoleReporter::print()
+void slog::NumericalConsoleReporter::print()
 {
     fmt::format_to(std::back_inserter(out), fmt::emphasis::bold, " {:─^80} ", "");
     fmt::print("{}\n", std::string{out.data(), out.size()});

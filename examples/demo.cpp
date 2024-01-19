@@ -36,7 +36,7 @@ int main()
     my_logger::error("Custom logger - an error message with an argument of value : {}", 5);
     my_logger::fatal("Custom logger - a fatal message with an argument of value : {}", 6);
 
-    auto ncr = NumericalConsoleReporter("My title");
+    auto ncr = slog::NumericalConsoleReporter("My title");
     ncr.add_line("A label", 5, 6);
     ncr.add_line("An other label", 4.2, 7.8);
     ncr.add_line("A decrease", 9.1, 7.6);
