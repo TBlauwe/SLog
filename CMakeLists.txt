@@ -60,8 +60,6 @@ if(${${PROJECT_NAME}_DOWNLOAD_DEPENDENCIES})
 			"FMT_INSTALL OFF"
 		)
 
-		suppress_warnings(misc_deps)
-
 	end_section(
 		CONDITION NOT ${PROJECT_NAME}_MISSING_DEPENDENCIES
 		PASS "done. Dependencies : ${${PROJECT_NAME}_DEPENDENCIES}"
