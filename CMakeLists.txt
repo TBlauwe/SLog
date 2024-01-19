@@ -54,7 +54,7 @@ if(${${PROJECT_NAME}_DOWNLOAD_DEPENDENCIES})
 		use_version(NAME fmt VERSION "10.0.0")
 		download_library(
 		  NAME fmt
-		  TARGETS fmt fmt-header-only
+		  TARGETS fmt 		  
 		  GITHUB_REPOSITORY fmtlib/fmt
 		  OPTIONS
 			"FMT_INSTALL OFF"
@@ -74,6 +74,11 @@ endif()
 # --- Headers
 SET(HEADER_LIST
     "include/slog/slog.hpp"
+    "include/slog/reporter.hpp"
+ )
+
+SET(SOURCE_LIST
+	"src/reporter.cpp"
 )
 
 # --- Assets
@@ -81,23 +86,27 @@ SET(HEADER_LIST
 
 section(CHECK_START "Configuring slog")
 
-	add_library(slog INTERFACE ${HEADER_LIST})
+	add_library(slog ${HEADER_LIST} ${SOURCE_LIST})
 	add_library(slog::slog ALIAS slog)
 
 	target_include_directories(
-		slog 
-		${${PROJECT_NAME}_WARNING_GUARD} INTERFACE 
+		slog
+		${${PROJECT_NAME}_WARNING_GUARD} PUBLIC 
 		"$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>"
 	)
+	target_include_directories(
+		slog
+		SYSTEM PUBLIC
+		"$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/export>"
+	)
 
-	target_link_libraries(slog INTERFACE fmt)
+	target_link_libraries(slog PUBLIC fmt)
 
-	target_compile_features(slog INTERFACE cxx_std_17)
-	target_compile_options(slog INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/Zc:preprocessor>) # if using __VA_OPT__, we enforce latest preprocessor on MSVC
-	target_compile_options(slog INTERFACE $<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->) # being a cross-platform target, we enforce standards conformance on MSVC
+	target_compile_features(slog PRIVATE cxx_std_17)
+	target_compile_options(slog PUBLIC $<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->) # being a cross-platform target, we enforce standards conformance on MSVC
 
 	if(${PROJECT_IS_TOP_LEVEL})
-	  target_set_compile_warnings_cxx(TARGET slog SCOPE INTERFACE)
+	  target_set_compile_warnings_cxx(TARGET slog SCOPE PRIVATE)
 	endif()
 
 

@@ -1,4 +1,5 @@
 #include <slog/slog.hpp>
+#include <slog/reporter.hpp>
 
 // Custom logger are defined by inheriting publicly : slog::Logger<>
 struct my_logger : public slog::Logger<my_logger>
@@ -35,9 +36,12 @@ int main()
     my_logger::error("Custom logger - an error message with an argument of value : {}", 5);
     my_logger::fatal("Custom logger - a fatal message with an argument of value : {}", 6);
 
+    auto ncr = NumericalConsoleReporter("My title");
+    ncr.add_line("A label", 5, 6);
+    ncr.add_line("An other label", 4.2, 7.8);
+    ncr.add_line("A decrease", 9.1, 7.6);
+    ncr.print();
+
     // An assert is also provided, that abort if condition is false
     slog_assert(slog::log, false, "We trigger an assert", 13);
-
 }
-
-

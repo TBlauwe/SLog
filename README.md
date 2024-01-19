@@ -21,6 +21,7 @@ Opinionated and simple logging library built around **[FMT](https://github.com/f
 * Multiple loggers with different configuration
   * Override members to customize your logger. See [Basic Usage](#Basic-Usage) below.
 * Multi-colored output
+* A comparative table of two float values.
 
 
 ## Getting started
@@ -92,6 +93,18 @@ slog_assert(my_logger, false, "We trigger an assert", 13);
 ```
 
 ![alt text](assets/output_4.png "Output")
+
+```cpp
+#include <slog/reporter.hpp>
+
+auto ncr = NumericalConsoleReporter("My title");
+ncr.add_line("A label", 5, 6);
+ncr.add_line("An other label", 4.2, 7.8);
+ncr.add_line("A decrease", 9.1, 7.6);
+ncr.print();
+```
+
+![alt text](assets/output_5.png "Output")
 
 
 ### Custom Logger
