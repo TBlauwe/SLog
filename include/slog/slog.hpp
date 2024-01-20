@@ -230,6 +230,30 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 #define slog_debug_if(logger, condition, message, ...) ((void)0)
 #endif
 
+/**
+ * @brief Returns a formatted char *.
+ *
+ * Really only useful for function overload that could take a string or not for debugging purposes.
+**/
+#ifndef NO_SLOG_LOG
+#define slog_debug_char(fmt, ...)\
+	fmt::format(message __VA_OPT__(, ) __VA_ARGS__).c_str()
+#else
+#define slog_debug_string(fmt, ...) 
+#endif
+
+/**
+ * @brief Returns a formatted string.
+ *
+ * Really only useful for function overload that could take a string or not for debugging purposes.
+**/
+#ifndef NO_SLOG_LOG
+#define slog_debug_string(fmt, ...)\
+	fmt::format(message __VA_OPT__(, ) __VA_ARGS__)
+#else
+#define slog_debug_string(fmt, ...)
+#endif
+
 
 /**
  * \brief Private macro do not use ! Generate function body for handling level format.
