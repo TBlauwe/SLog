@@ -59,6 +59,8 @@ namespace impl
     }();
 } // namespace impl
 
+namespace slog
+{
 template <typename T> [[nodiscard]] constexpr std::string_view type_name()
 {
     return {impl::type_name_storage<T>.data(), impl::type_name_storage<T>.size() - 1};
@@ -78,4 +80,6 @@ template <typename T> [[nodiscard]] std::string friendly_type_name()
     std::ranges::replace( tmp, '<', '_'); // TODO Temporary fix while flecs serialization doesn't handle these correctly
     std::ranges::replace(tmp, '>', '_');
     return tmp;
+}
+
 }
