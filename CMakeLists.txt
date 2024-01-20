@@ -75,6 +75,7 @@ endif()
 SET(HEADER_LIST
     "include/slog/slog.hpp"
     "include/slog/reporter.hpp"
+    "include/slog/typename.hpp"
  )
 
 SET(SOURCE_LIST
