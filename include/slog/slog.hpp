@@ -236,7 +236,7 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
  * Really only useful for function overload that could take a string or not for debugging purposes.
 **/
 #ifndef NO_SLOG_LOG
-#define slog_debug_char(fmt, ...)\
+#define slog_debug_char(message, ...)\
 	fmt::format(message __VA_OPT__(, ) __VA_ARGS__).c_str()
 #else
 #define slog_debug_string(fmt, ...) 
@@ -248,7 +248,7 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
  * Really only useful for function overload that could take a string or not for debugging purposes.
 **/
 #ifndef NO_SLOG_LOG
-#define slog_debug_string(fmt, ...)\
+#define slog_debug_string(message, ...)\
 	fmt::format(message __VA_OPT__(, ) __VA_ARGS__)
 #else
 #define slog_debug_string(fmt, ...)
