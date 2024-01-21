@@ -41,7 +41,7 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 \endcode
 	 * 
 	 * Optimisation :
-	 * If _NDEBUG is defined, function body are empty. Function call is still called, but with -O2, 
+	 * If NO_SLOG_LOG is defined, function body are empty. Function call is still called, but with -O2, 
 	 * function call is optimised and removed, if there is no arg.
 	 *
 	 * To make sure that function call is removed when desired, the macros can be used.
@@ -89,7 +89,7 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 
 /** 
  *  \brief Runtime fatal message emitted only if \c condition is evaluated to true. 
- *  Line removed from code if @c NO_SLOG_LOG is not defined.
+ *  Line removed from code if @c NO_SLOG_LOG is defined.
 
  *	\param logger A logger type.
  *	\param condition Log only if @c condition is true.
@@ -113,7 +113,7 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 
 /** 
  *  \brief Runtime error message emitted only if \c condition is evaluated to true. 
- *  Line removed from code if @c NO_SLOG_LOG is not defined.
+ *  Line removed from code if @c NO_SLOG_LOG is defined.
 
  *	\param logger A logger type.
  *	\param condition Log only if @c condition is true.
@@ -136,7 +136,7 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 #endif
 /** 
  *  \brief Runtime warning message emitted only if \c condition is evaluated to true. 
- *  Line removed from code if @c NO_SLOG_LOG is not defined.
+ *  Line removed from code if @c NO_SLOG_LOG is defined.
 
  *	\param logger A logger type.
  *	\param condition Log only if @c condition is true.
@@ -159,7 +159,7 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 #endif
 /** 
  *  \brief Runtime success message emitted only if \c condition is evaluated to true. 
- *  Line removed from code if @c NO_SLOG_LOG is not defined.
+ *  Line removed from code if @c NO_SLOG_LOG is defined.
 
  *	\param logger A logger type.
  *	\param condition Log only if @c condition is true.
@@ -183,7 +183,7 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 
 /** 
  *  \brief Runtime info message emitted only if \c condition is evaluated to true. 
- *  Line removed from code if @c NO_SLOG_LOG is not defined.
+ *  Line removed from code if @c NO_SLOG_LOG is defined.
 
  *	\param logger A logger type.
  *	\param condition Log only if @c condition is true.
@@ -208,7 +208,7 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 
 /** 
  *  \brief Runtime debug message emitted only if \c condition is evaluated to true. 
- *  Line removed from code if @c NO_SLOG_LOG is not defined.
+ *  Line removed from code if @c NO_SLOG_LOG is defined.
 
  *	\param logger A logger type.
  *	\param condition Log only if @c condition is true.
@@ -228,6 +228,35 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 	static_assert(true, "")
 #else
 #define slog_debug_if(logger, condition, message, ...) ((void)0)
+#endif
+
+#/** 
+ *  \brief Runtime debug message emitted as a success if \c condition is evaluated to true, otherwise as a warning.
+ *  Line removed from code if @c NO_SLOG_LOG is defined.
+
+ *	\param logger A logger type.
+ *	\param condition Log only if @c condition is true.
+ *	\param success_message A fmt string literal, followed by your arguments, used when @c condition is true.
+ *	\param warning_message A fmt string literal, followed by your arguments, used when @c condition is false.
+ *
+ *	Usage:
+\code{.cpp}
+ *	slog_check(logger, true, "Success message", "Warning message");
+\endcode
+ */
+#ifndef NO_SLOG_LOG
+#define slog_check(logger, condition, success_message, warning_message, ...)\
+	if(condition)\
+	{\
+		logger::success(success_message __VA_OPT__(,) __VA_ARGS__);\
+	}\
+	else\
+	{\
+		logger::warn(warning_message __VA_OPT__(,) __VA_ARGS__);\
+	}\
+	static_assert(true, "")
+#else
+#define slog_check(logger, condition, success_message, warning_message, ...) ((void)0)
 #endif
 
 /**

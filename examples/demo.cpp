@@ -42,6 +42,9 @@ int main()
     ncr.add_line("A decrease", 9.1, 7.6);
     ncr.print();
 
+    slog_check(slog::log, true, "Success", "Warning");
+    slog_check(slog::log, false, "Success", "Warning");
+
     // An assert is also provided, that abort if condition is false
     slog_assert(slog::log, false, "We trigger an assert", 13);
 }
