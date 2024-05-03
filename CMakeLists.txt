@@ -110,6 +110,14 @@ section(CHECK_START "Configuring slog")
 	  target_set_compile_warnings_cxx(TARGET slog SCOPE PRIVATE)
 	endif()
 
+	if (NO_SLOG_LOG)
+		target_compile_definitions(slog PUBLIC "NO_SLOG_LOG")
+	endif ()
+
+	if (NO_SLOG_ASSERT)
+		target_compile_definitions(slog PUBLIC "NO_SLOG_ASSERT")
+	endif ()
+
 
 end_section( 
 	CONDITION TARGET slog
