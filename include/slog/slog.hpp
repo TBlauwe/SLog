@@ -367,7 +367,7 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 \endcode
 	 * 
 	 * Optimisation :
-	 * If _NDEBUG is defined, function body are empty. Function call is still called, but with -O2, 
+	 * If NO_SLOG_LOG is defined, function body are empty. Function call is still called, but with -O2, 
 	 * function call is optimised and removed, if there is no arg.
 	 *
 	 * To make sure that function call is removed when desired, the macros can be used.
@@ -376,39 +376,51 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 	struct Logger
 	{
 		template <typename Input, typename... Args>
-		inline static void fatal(Input&& fmt, Args... args)
+		static void fatal(Input&& fmt, Args... args)
 		{
+#ifndef NO_SLOG_LOG
 			log<Level::Fatal>(std::forward<Input>(fmt), std::forward<Args>(args)...);
+#endif
 		}
 
 		template <typename Input, typename... Args>
-		inline static void error(Input fmt, Args... args)
+		static void error(Input fmt, Args... args)
 		{
+#ifndef NO_SLOG_LOG
 			log<Level::Error>(fmt, std::forward<Args>(args)...);
+#endif
 		}
 
 		template <typename Input, typename... Args>
-		inline static void warn(Input fmt, Args... args)
+		static void warn(Input fmt, Args... args)
 		{
+#ifndef NO_SLOG_LOG
 			log<Level::Warn>(fmt, std::forward<Args>(args)...);
+#endif
 		}
 
 		template <typename Input, typename... Args>
-		inline static void success(Input fmt, Args... args)
+		static void success(Input fmt, Args... args)
 		{
+#ifndef NO_SLOG_LOG
 			log<Level::Success>(fmt, std::forward<Args>(args)...);
+#endif
 		}
 
 		template <typename Input, typename... Args>
-		inline static void info(Input fmt, Args... args)
+		static void info(Input fmt, Args... args)
 		{
+#ifndef NO_SLOG_LOG
 			log<Level::Info>(fmt, std::forward<Args>(args)...);
+#endif
 		}
 
 		template <typename Input, typename... Args>
-		inline static void debug(Input fmt, Args... args)
+		static void debug(Input fmt, Args... args)
 		{
+#ifndef NO_SLOG_LOG
 			log<Level::Debug>(fmt, std::forward<Args>(args)...);
+#endif
 		}
 
 		// --- TIME ---
@@ -474,9 +486,9 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 		void operator=(Logger const&) = delete;
 
 		template <Level level, typename Input, typename... Args>
-		inline static void log(Input&& fmt, Args&&... args)
+		static void log(Input&& fmt, Args&&... args)
 		{
-#ifndef _NDEBUG
+#ifndef NO_SLOG_LOG
 			if constexpr(Self::add_new_line)
 				fmt::print("{}\n", Self::template to_string<level>(std::forward<Input>(fmt), std::forward<Args>(args)...));
 			else
@@ -485,9 +497,9 @@ slog_assert(my_logger, false, "Abort if false {}", arg);
 		}
 
 		template <Level level, typename Input, typename... Args>
-		inline static std::string to_string(Input&& fmt, Args&&... args)
+		static std::string to_string(Input&& fmt, Args&&... args)
 		{
-#ifndef _NDEBUG
+#ifndef NO_SLOG_LOG
 			// Our subsequent characters will be inserted into this.
 			fmt::memory_buffer out;
 
